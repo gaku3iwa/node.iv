@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="stylesheet" href="./index.css">
+  <script src='./bundle.js'></script>
+  <script src='./index.js'></script>
+  <title>iv for webapp</title>
+</head>
+
+<body>
+  <div id="dropzone">
+
+    <div class="title">
+      画像のドラッグ＆ドロップ、または
+      <input id="select_file" type="file" name="file" onchange="onLoadFromInput();">
+    </div>
+
+    <div class="area hide">
+      <div class="title">元画像</div>
+      <canvas id="canvas_src">元画像</canvas>
+      <canvas id="canvas_dst">縮小画像</canvas>
+    </div>
+
+    <div class="area">
+      <div class="title">
+        <table style="width: 12rem;">
+          <tbody>
+            <tr>
+              <td>縮小率</td>
+              <td class="tar"><input id="params_image" type="test" value="25" onchange="convertImage();">%</input></td>
+            </tr>
+            <tr>
+              <td>画素数</td>
+              <td class="tar"><span id="output_px"></span></td>
+            </tr>
+            <tr>
+              <td>W x H</td>
+              <td class="tar"><span id="output_size"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <img id="output_image">
+
+      <div id="params_save" class="hide">
+        <button onclick="saveJPGImageData();">save JPG</button>
+        <button onclick="savePNGImageData();">save PNG</button>
+        <a id="download_link"></a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+
+  // **************************************************************************
+  // ファイル選択イベントハンドラー
+  const onLoadFromInput = () => {
+    let s_select = document.getElementById("select_file");
+    onFileSelected(s_select);
+  };
+
+  // **************************************************************************
+  // イメージ変換処理
+  const convertImage = () => {
+    // ソースイメージ
+    let cv_src = document.getElementById("canvas_src");
+    let img = cv_src.img_data;
+    if (!img) {
+      alert("no image");
+      return;
+    }
+
+    // パラメータ情報
+    let params = document.getElementById("params_image");
+    let zoom = (params.value ?? 100.0) / 100.0;
+
+    // 処理実行（bundle.js）
+    let output = myLib.exec(img, zoom);
+
+    // 処理結果の画素数、イメージサイズを表示
+    document.getElementById("output_px").innerHTML = `<lavel>${(output.w * output.h).toLocaleString()}</label>`;
+    document.getElementById("output_size").innerHTML = `<lavel>${output.w} x ${output.h}</label>`;
+
+    // 処理結果のイメージをcanvasへ出力
+    let cv_dst = document.getElementById("canvas_dst");
+    cv_dst.setAttribute("width", output.w);
+    cv_dst.setAttribute("height", output.h);
+    cv_dst.getContext("2d").putImageData(output.img, 0, 0);
+    cv_dst.img_data = output.img;
+
+    // canvasからimgへ出力
+    let img_tag = document.getElementById("output_image");
+    img_tag.setAttribute("width", output.w);
+    img_tag.setAttribute("height", output.h);
+    img_tag.src = cv_dst.toDataURL();
+
+    // // フォーカスを縮小率へ
+    // params.select();
+    // params.focus();
+  };
+
+  // --------------------------------------------------------------------------
+  // グローバル変数
+  let src_image_path = ``;
+  let callback_func = convertImage;
+
+  client_body();
+
+  </script>
+</body>
+
+</html>
