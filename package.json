@@ -1,6 +1,6 @@
 {
   "name": "node.iv",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3",
+    "express": "^4.18.1",
     "sirv-cli": "^2.0.2"
   },
   "devDependencies": {
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
     "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
   }
