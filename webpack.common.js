@@ -3,11 +3,11 @@ const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
   entry: {
-    main: path.join(__dirname, "src", "main.js"),
+    main: path.join(__dirname, "src", "bundle_main.js"),
   },
   target: "node",
   output: {
-    path: path.join(__dirname, "docs"),
+    path: path.join(__dirname, "docs", "js"),
     filename: "bundle.js",
     library: "myLib",
     libraryTarget: "umd",

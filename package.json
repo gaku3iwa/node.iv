@@ -6,7 +6,6 @@
   "scripts": {
     "ncu": "npm-check-updates -u",
     "build": "webpack --config webpack.prod.js",
-    "setver": "node index.js",
     "client": "sirv docs --no-clear --port 4989",
     "start": "npm run client"
   },
