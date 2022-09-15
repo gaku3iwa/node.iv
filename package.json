@@ -6,14 +6,13 @@
   "scripts": {
     "ncu": "npm-check-updates -u",
     "build": "webpack --config webpack.prod.js",
-    "express": "node index.js",
-    "sirv": "sirv docs --no-clear --port 4989",
-    "start": "npm run sirv"
+    "setver": "node index.js",
+    "client": "sirv docs --no-clear --port 4989",
+    "start": "npm run client"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1",
     "sirv-cli": "^2.0.2"
   },
   "devDependencies": {
