@@ -9,7 +9,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, "docs", "js"),
     filename: "bundle.js",
-    library: "myLib",
+    library: "iv",
     libraryTarget: "umd",
     globalObject: "this",
   },

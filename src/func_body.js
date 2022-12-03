@@ -4,7 +4,7 @@
 // 参照先:https://nodamushi.hatenablog.com/entry/20111015/1318686459
 // 面積平均法をJavaScriptへ移植
 exports.exec = (img, zoom = 0.25) => {
-  let result = { w: 0, h: 0, img: null };
+  let result = { width: 0, height: 0, image: null };
 
   let src = img;
   let w = img.width;
@@ -87,9 +87,9 @@ exports.exec = (img, zoom = 0.25) => {
   }
 
   // 処理結果の戻り値
-  result.w = zoomw;
-  result.h = zoomh;
-  result.img = dst;
+  result.width = zoomw;
+  result.height = zoomh;
+  result.image = dst;
 
   return result;
 };
