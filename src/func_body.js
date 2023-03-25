@@ -19,16 +19,12 @@ exports.exec = (img, zoom = 0.25) => {
   let dst = canvas.getContext("2d").createImageData(zoomw, zoomh);
 
   for (let i = 0; i < zoomw * zoomh; i++) {
-    let x = i % zoomw >> 0;
-    let y = (i / zoomw) >> 0;
 
+    let x = (i % zoomw) >> 0;
+    let y = (i / zoomw) >> 0;
     let imgx = x / zoom;
     let imgy = y / zoom;
-    let s = 0,
-      r = 0,
-      g = 0,
-      b = 0,
-      a = 0;
+    let s = r = g = b = a = 0;
 
     for (let dy = imgy; dy < imgy + length; ) {
       let Y = dy >> 0;
