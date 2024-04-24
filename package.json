@@ -1,23 +1,22 @@
 {
-  "name": "node.iv",
-  "version": "1.0.0",
+  "name": "electron.iv",
+  "version": "2.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./docs/main.js",
   "scripts": {
-    "ncu": "npm-check-updates -u",
-    "build": "webpack --config webpack.prod.js",
-    "client": "sirv docs --no-clear --port 4989",
-    "start": "npm run client"
+    "ncu": "npx npm-check-updates -u",
+    "build bundle": "webpack --config webpack.prod.js",
+    "dev_electron": ".\\node_modules\\electron\\dist\\electron.exe .\\",
+    "pack_win32-x64": "npx @electron/packager ./ --platform=win32 --arch=x64 --overwrite --ignore=\\.editorconfig --ignore=\\.gitattributes --ignore=\\.gitignore --ignore=\\.prettierignore --ignore=node_modules"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "sirv-cli": "^2.0.2"
-  },
   "devDependencies": {
-    "webpack": "^5.76.3",
-    "webpack-cli": "^5.0.1",
-    "webpack-merge": "^5.8.0",
+    "@electron/packager": "^18.3.2",
+    "electron": "^30.0.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.10.0",
     "webpack-node-externals": "^3.0.0"
   }
 }

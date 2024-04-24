@@ -1,116 +1,149 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
-  <link rel="manifest" href="./manifest.json">
-  <link rel="stylesheet" href="./index.css">
-  <script src='./js/bundle.js'></script>
-  <script src='./index.js'></script>
-  <title>iv for webapp</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+	<!-- favicon, etc... -->
+	<link href="./favicon.svg" rel="icon" type="image/svg+xml">
+	<link href="./apple-touch-icon.png" rel="apple-touch-icon">
+	<link href="./manifest.json" rel="manifest">
+	<!-- font awesome, bootstrap, 独自デザイン定義 -->
+	<link href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+	<link href="./index.css" rel="stylesheet">
+	<!-- node.iv -->
+	<script src="./js/bundle.js"></script>
+	<title>Image Viewer</title>
 </head>
 
 <body>
-  <div id="dropzone">
+	<!-- header -->
+	<div class="fixed-top">
+		<!-- custom titlebar -->
+		<div class="d-flex justify-content-between d-none" id="titlebar">
+			<button id="btn_w_ico" type="button" class="btn btn-sm btn-outline-dark m-0 p-0 border-0 rounded-0">
+				<i class="fa-solid fa-sm fa-image"></i>
+			</button>
+			<div class="flex-fill"></div>
+			<div class="btn-group btn-group-sm border-0 rounded-0" role="group" aria-label="">
+				<button id="btn_w_min" type="button" class="btn btn-outline-primary border-0 rounded-0"><i class="fa-solid fa-sm fa-window-minimize"></i></button>
+				<button id="btn_w_max" type="button" class="btn btn-outline-primary border-0 rounded-0"><i class="fa-solid fa-sm fa-window-maximize"></i></button>
+				<button id="btn_w_res" type="button" class="btn btn-outline-primary border-0 rounded-0 d-none"><i class="fa-solid fa-sm fa-window-restore"></i></button>
+				<button id="btn_w_cls" type="button" class="btn btn-outline-danger  border-0 rounded-0"><i class="fa-solid fa-md fa-xmark"></i></button>
+			</div>
+		</div><!-- d-flex -->
 
-    <div class="title">
-      Drag & Drop Image or
-      <input id="select_file" type="file" name="file" accept="image/*" onchange="onLoadFromInput();">
-    </div>
+		<!-- navbar -->
+		<div class="d-flex justify-content-between">
+			<div class="flex-fill"></div>
 
-    <div class="area hide">
-      <div class="title">元画像</div>
-      <canvas id="canvas_src">元画像</canvas>
-      <canvas id="canvas_dst">縮小画像</canvas>
-    </div>
+			<nav class="navbar navbar-light m-0 p-0 border-0 rounded-0">
+				<!-- navbar-toggler -->
+				<button id="btn_w_cnf" class="navbar-toggler btn btn-sm btn-outline-warning border-0 rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+					<i class="fa-regular fa-xs fa-gear"></i>
+				</button>
 
-    <div class="area">
-      <div class="title">
-        <table>
-          <tbody>
-            <tr>
-              <td class="tar">拡縮率</td>
-              <td class="tar">pixels</td>
-              <td class="tar">size(w h)</td>
-            </tr>
-            <tr>
-              <td class="tar bor1"><input id="params_image" type="test" value="25" onchange="resizeImage();">%</input></td>
-              <td class="tar"><span id="output_px"></span></td>
-              <td class="tar"><span id="output_size"></span></td>
-            </tr>
-            <tr>
-              <td class="tar"></td>
-              <td class="tar"><button onclick="saveJPGImageData();">save JPG</button></td>
-              <td class="tar"><button onclick="savePNGImageData();">save PNG</button></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+				<!-- offcanvas -->
+				<div class="container-fluid">
+					<div id="offcanvasNavbar" class="offcanvas offcanvas-end" tabindex="-1" aria-labelledby="offcanvasNavbarLabel">
 
-      <img id="result_image">
+						<div class="offcanvas-header">
+							<div id="offcanvasNavbarLabel" class="offcanvas-title">
+								<h4 class="m-0 p-0">Image Viewer</h4>
+								<h6 class="m-0 p-0" id="nav_label"></h6>
+							</div>
+							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+						</div><!-- offcanvas-header -->
 
-      <div id="params_save" class="hide">
-        <a id="download_link"></a>
-      </div>
+						<div class="offcanvas-body">
+							<ul class="navbar-nav me-auto">
 
-    </div>
-  </div>
+								<li class="nav-item">
+									<div class="text-center">Input image info.</div>
+									<div class="input-group mb-1">
+										<label class="input-group-text" for="select_file"><i class="fa-solid fa-file-import"></i></label>
+										<input class="d-none" type="file" id="select_file" name="file" accept="image/*">
+										<label class="form-control" id="select_file_label" for="select_file">Select an image file</label>
+									</div>
+									<div class="input-group mb-1">
+										<div class="input-group-text">
+											<input class="form-check-input mt-0" type="radio" name="param_group" checked>
+										</div>
+										<input class="form-control param_number" id="param_sizez" type="text" placeholder="zoom" value="25">
+										<label class="input-group-text">%</label>
+									</div>
+									<div class="input-group mb-3">
+										<div class="input-group-text">
+											<input class="form-check-input mt-0" type="radio" name="param_group">
+										</div>
+										<input class="form-control param_number" id="param_sizex" type="text" placeholder="width">
+										<input class="form-control param_number" id="param_sizey" type="text" placeholder="height">
+									</div>
+								</li>
 
-  <script>
+								<li class="nav-item">
+									<div class="text-center">Result image info.</div>
+									<div class="input-group input-group-sm mb-1">
+										<label class="input-group-text w-50">pixels</label>
+										<label class="form-control label_number" id="result_sizep"></label>
+									</div>
+									<div class="input-group input-group-sm mb-3">
+										<label class="input-group-text w-25">width</label>
+										<label class="input-group-text w-25">height</label>
+										<label class="form-control label_number" id="result_sizex"></label>
+										<label class="form-control label_number" id="result_sizey"></label>
+									</div>
+								</li>
 
-  // **************************************************************************
-  // ファイル選択イベントハンドラー
-  const onLoadFromInput = () => {
-    let s_select = document.getElementById("select_file");
-    onFileSelected(s_select);
-  };
+								<li class="nav-item">
+									<div class="text-center">Original image info.</div>
+									<div class="input-group input-group-sm mb-1">
+										<label class="input-group-text w-50">pixels</label>
+										<label class="form-control label_number" id="original_sizep"></label>
+									</div>
+									<div class="input-group input-group-sm mb-3">
+										<label class="input-group-text w-25">width</label>
+										<label class="input-group-text w-25">height</label>
+										<label class="form-control label_number" id="original_sizex"></label>
+										<label class="form-control label_number" id="original_sizey"></label>
+									</div>
+								</li>
 
-  // **************************************************************************
-  // イメージ変換処理
-  const resizeImage = () => {
-    // ソースイメージ
-    let cvs_src = document.getElementById("canvas_src");
-    let img_src = cvs_src.img_data;
-    if (!img_src) {
-      alert("no image");
-      return;
-    }
+								<li class="nav-item">
+									<div class="text-center">command</div>
+									<div class="btn-group btn-group-lg mb-3 w-100" role="group" aria-label="">
+										<button type="button" class="btn btn-outline-success" onclick="savePNGImageData()"><i class="fa-light fa-xl fa-file-png"></i></button>
+										<button type="button" class="btn btn-outline-success" onclick="saveJPGImageData()"><i class="fa-light fa-xl fa-file-jpg"></i></button>
+										<button type="button" class="btn btn-outline-dark d-none" id="btn_tool"><i class="fa-light fa-xl fa-gears"></i></button>
+										<button type="button" class="btn btn-outline-dark" id="btn_help"><i class="fa-solid fa-xl fa-message-question"></i></i></button>
+									</div>
+									<a class="d-none" id="link"></a>
+								</li>
 
-    // パラメータ情報
-    let params = document.getElementById("params_image");
-    let zoom = (params.value ?? 100.0) / 100.0;
+							</ul>
+						</div><!-- offcanvas-body -->
+					</div><!-- offcanvas -->
+				</div><!-- container-fluid -->
+			</nav>
+		</div><!-- d-flex -->
+	</div><!-- fixed-top -->
 
-    // 処理実行（bundle.js）
-    let result = iv.exec(img_src, zoom);
+	<!-- body -->
+	<div id="dropzone">
+		<div class="d-none">
+			<canvas id="canvas_src">処理前</canvas>
+			<canvas id="canvas_dst">処理後</canvas>
+		</div>
+		<img id="result_image">
+	</div>
 
-    // 処理結果の画素数、イメージサイズを表示
-    document.getElementById("output_px").innerHTML = `<lavel>${(result.width * result.height).toLocaleString()}</label>`;
-    document.getElementById("output_size").innerHTML = `<lavel>${result.width} ${result.height}</label>`;
-
-    // 処理結果のイメージをcanvasへ出力
-    let cvs_dst = document.getElementById("canvas_dst");
-    cvs_dst.setAttribute("width", result.width);
-    cvs_dst.setAttribute("height", result.height);
-    cvs_dst.getContext("2d").putImageData(result.image, 0, 0);
-    cvs_dst.img_data = result.image;
-
-    // canvasからimgへ出力
-    let img_tag = document.getElementById("result_image");
-    img_tag.setAttribute("width", result.width);
-    img_tag.setAttribute("height", result.height);
-    img_tag.src = cvs_dst.toDataURL();
-  };
-
-  // --------------------------------------------------------------------------
-  // グローバル変数
-  let img_src_path = ``;
-  let callback_func = resizeImage;
-
-  client_body();
-
-  </script>
+	<!-- footer -->
+	<div></div>
 </body>
+<!-- bootstrap, electron renderer, 独自イベント定義 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+<script src="./js/renderer.js"></script>
+<script src="./js/event.js"></script>
 
 </html>
