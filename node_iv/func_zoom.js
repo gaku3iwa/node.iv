@@ -1,57 +1,57 @@
 //	----------------------------------------------------------------------------
-//	イメージ縮小処理
+//	イメージ拡縮処理
 //	----------------------------------------------------------------------------
 //	参照先:https://nodamushi.hatenablog.com/entry/20111015/1318686459
 //	面積平均法をJavaScriptへ移植
-exports.exec_size = (img, sizex, sizey) => {
-	let result = { width: 0, height: 0, image: null }
+exports.exec_zoom = (img, sizez = 0.25) => {
+	//	元イメージ
+	const src = img
+	const w = img.width
+	const h = img.height
 
-	let src = img
-	let w = img.width
-	let h = img.height
-
-	let zoom_x = sizex / w
-	let zoom_y = sizey / h
-	let zoom_w = sizex
-	let zoom_h = sizey
-	let length_x = 1 / zoom_x
-	let length_y = 1 / zoom_y
+	//	実行パラメータ
+	const zoom_x = sizez
+	const zoom_y = sizez
+	const zoom_w = Math.ceil(zoom_x * w)
+	const zoom_h = Math.ceil(zoom_y * h)
+	const length_x = 1 / zoom_x
+	const length_y = 1 / zoom_y
 
 	//	中間画像の準備
-	let canvas = document.createElement("canvas")
-	let dst = canvas.getContext("2d").createImageData(zoom_w, zoom_h)
+	const canvas = document.createElement("canvas")
+	const dst = canvas.getContext("2d").createImageData(zoom_w, zoom_h)
 
 	for (let i = 0; i < zoom_w * zoom_h; i++) {
 
-		let x = (i % zoom_w) >> 0
-		let y = (i / zoom_w) >> 0
-		let img_x = x / zoom_x
-		let img_y = y / zoom_y
+		const x = (i % zoom_w) >> 0
+		const y = (i / zoom_w) >> 0
+		const img_x = x / zoom_x
+		const img_y = y / zoom_y
 		let s = r = g = b = a = 0
 
 		for (let dy = img_y; dy < img_y + length_y;) {
-			let Y = dy >> 0
-			if (Y >= h) break
+			const YY = dy >> 0
+			if (YY >= h) break
 
-			let nextdy = Y + 1
+			let nextdy = YY + 1
 			if (nextdy > img_y + length_y) nextdy = img_y + length_y
-			let ry = nextdy - dy
+			const ry = nextdy - dy
 
 			for (let dx = img_x; dx < img_x + length_x;) {
-				let X = dx >> 0
-				if (X >= w) break
+				const XX = dx >> 0
+				if (XX >= w) break
 
-				let nextdx = X + 1
+				let nextdx = XX + 1
 				if (nextdx > img_x + length_x) nextdx = img_x + length_x
-				let rx = nextdx - dx
+				const rx = nextdx - dx
 
 				//	該当するピクセルが入っている面積
-				let S = rx * ry
-				let src_idx = (X + Y * w) * 4
-				let rc = src.data[src_idx + 0]	//	赤
-				let gc = src.data[src_idx + 1]	//	緑
-				let bc = src.data[src_idx + 2]	//	青
-				let ac = src.data[src_idx + 3]	//	透明度
+				const S = rx * ry
+				const src_idx = (XX + YY * w) * 4
+				const rc = src.data[src_idx + 0]	//	赤
+				const gc = src.data[src_idx + 1]	//	緑
+				const bc = src.data[src_idx + 2]	//	青
+				const ac = src.data[src_idx + 3]	//	透明度
 
 				//	面積の重みを掛けて総和を算出
 				r += rc * S
@@ -86,9 +86,9 @@ exports.exec_size = (img, sizex, sizey) => {
 	}
 
 	//	処理結果の戻り値
-	result.width = zoom_w
-	result.height = zoom_h
-	result.image = dst
-
-	return result
+	return {
+		height: zoom_h,
+		width: zoom_w,
+		image: dst
+	}
 }

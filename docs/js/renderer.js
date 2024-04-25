@@ -40,10 +40,14 @@ $nav_help.addEventListener(`click`, () => {
 					`node : v${electron.node()}`,
 					`electron : v${electron.electron()}`,
 					`chrome : v${electron.chrome()}`,
+					`v8 : v${electron.v8()}`,
+					`zlib : v${electron.zlib()}`,
+					`openssl : v${electron.openssl()}`,
+					``,
 				]
 				alert(`${msg.join(`\n`)}`)
 			})
 	} else {
-		alert(`✨ただいま、ブラウザ環境で実行中✨`)
+		alert(`Now running in development branch\nただいま、開発ブランチで実行中`)
 	}
 })

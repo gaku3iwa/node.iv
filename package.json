@@ -1,13 +1,13 @@
 {
   "name": "electron.iv",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "",
   "main": "./docs/main.js",
   "scripts": {
     "ncu": "npx npm-check-updates -u",
     "build bundle": "webpack --config webpack.prod.js",
-    "dev_electron": ".\\node_modules\\electron\\dist\\electron.exe .\\",
-    "pack_win32-x64": "npx @electron/packager ./ --platform=win32 --arch=x64 --overwrite --ignore=\\.editorconfig --ignore=\\.gitattributes --ignore=\\.gitignore --ignore=\\.prettierignore --ignore=node_modules"
+    "exec electron": ".\\node_modules\\electron\\dist\\electron.exe .\\",
+    "pack win32-x64": "npx @electron/packager ./ --platform=win32 --arch=x64 --overwrite --ignore=\\.editorconfig --ignore=\\.gitattributes --ignore=\\.gitignore --ignore=\\.prettierignore --ignore=node_modules"
   },
   "author": "",
   "license": "ISC",

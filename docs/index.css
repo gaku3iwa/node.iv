@@ -11,7 +11,6 @@ html {
 body {
 	margin: 0;
 	padding: 0;
-	padding-top: 30px;
 	height: 100%;
 	background-color: #cccccc;
 	/* font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace; */
@@ -29,10 +28,23 @@ canvas {
 	--bs-navbar-toggler-padding-x: 0.5rem
 }
 
+.offcanvas-body {
+	padding-top: 0;
+}
+
+.w-46px {
+	width: 46px;
+}
+
 .param_number {
 	background-color: azure;
 	font-size: 1rem;
 	text-align: right;
+}
+
+.label_text {
+	background-color: var(--bs-tertiary-bg);
+	font-size: 1rem;
 }
 
 .label_number {
@@ -58,21 +70,19 @@ nav,
 	-webkit-user-select: none;
 }
 
+#btn_png:focus,
+#btn_jpg:focus,
+#btn_tool:focus,
+#btn_help:focus,
 #btn_w_ico:focus,
 #btn_w_cnf:focus,
 #btn_w_min:focus,
 #btn_w_max:focus,
 #btn_w_res:focus,
-#btn_w_cls:focus {
+#btn_w_cls:focus,
+#param_link:focus {
 	border-color: inherit;
 	box-shadow: none;
-}
-
-#dropzone {
-	background-color: transparent;
-	margin: 0;
-	padding: 0;
-	height: calc(100% - 0px);
 }
 
 #result_sizep,
@@ -83,4 +93,40 @@ nav,
 #original_sizey {
 	user-select: text;
 	-webkit-user-select: text;
+}
+
+#dropzone {
+	background-color: transparent;
+	margin: 0;
+	padding: 0;
+	height: calc(100% - 0px);
+	position: relative;
+}
+
+/* result image */
+#result_image {
+	transition: all 0.4s ease;
+}
+
+.display-normal {
+	margin-top: 30px;
+	transform: translate(0, 0);
+}
+
+.display-center {
+	margin-top: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.offcanvas-center {
+	/* 親要素が.offcanvasじゃないと参照できない変数だったので、ここで再定義 */
+	--bs-offcanvas-width: 400px;
+	margin-top: 0;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(calc(-50% - var(--bs-offcanvas-width) / 2), -50%);
 }

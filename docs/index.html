@@ -4,117 +4,123 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<!-- favicon, etc... -->
 	<link href="./favicon.svg" rel="icon" type="image/svg+xml">
 	<link href="./apple-touch-icon.png" rel="apple-touch-icon">
 	<link href="./manifest.json" rel="manifest">
-	<!-- font awesome, bootstrap, 独自デザイン定義 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css" rel="stylesheet">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 	<link href="./index.css" rel="stylesheet">
-	<!-- node.iv -->
-	<script src="./js/bundle.js"></script>
-	<title>Image Viewer</title>
+	<script src="./js/node_iv_bundle.js"></script>
 </head>
 
 <body>
-	<!-- header -->
+	<!-- custom titlebar -->
 	<div class="fixed-top">
-		<!-- custom titlebar -->
+
+		<!-- line 1 -->
 		<div class="d-flex justify-content-between d-none" id="titlebar">
 			<button id="btn_w_ico" type="button" class="btn btn-sm btn-outline-dark m-0 p-0 border-0 rounded-0">
 				<i class="fa-solid fa-sm fa-image"></i>
 			</button>
 			<div class="flex-fill"></div>
-			<div class="btn-group btn-group-sm border-0 rounded-0" role="group" aria-label="">
+			<div class="btn-group btn-group-sm border-0 rounded-0" role="group">
 				<button id="btn_w_min" type="button" class="btn btn-outline-primary border-0 rounded-0"><i class="fa-solid fa-sm fa-window-minimize"></i></button>
 				<button id="btn_w_max" type="button" class="btn btn-outline-primary border-0 rounded-0"><i class="fa-solid fa-sm fa-window-maximize"></i></button>
 				<button id="btn_w_res" type="button" class="btn btn-outline-primary border-0 rounded-0 d-none"><i class="fa-solid fa-sm fa-window-restore"></i></button>
 				<button id="btn_w_cls" type="button" class="btn btn-outline-danger  border-0 rounded-0"><i class="fa-solid fa-md fa-xmark"></i></button>
 			</div>
-		</div><!-- d-flex -->
+		</div><!-- line 1 -->
 
-		<!-- navbar -->
+		<!-- line 2 -->
 		<div class="d-flex justify-content-between">
 			<div class="flex-fill"></div>
 
-			<nav class="navbar navbar-light m-0 p-0 border-0 rounded-0">
+			<!-- navbar -->
+			<nav class="navbar m-0 p-0 border-0 rounded-0">
 				<!-- navbar-toggler -->
-				<button id="btn_w_cnf" class="navbar-toggler btn btn-sm btn-outline-warning border-0 rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-					<i class="fa-regular fa-xs fa-gear"></i>
+				<button id="btn_w_cnf" class="navbar-toggler btn btn-sm btn-outline-warning border-0 rounded-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+					<i id="conf" class="fa-regular fa-xs fa-gear"></i>
 				</button>
 
 				<!-- offcanvas -->
 				<div class="container-fluid">
-					<div id="offcanvasNavbar" class="offcanvas offcanvas-end" tabindex="-1" aria-labelledby="offcanvasNavbarLabel">
+					<div id="offcanvasNavbar" class="offcanvas offcanvas-end" tabindex="-1">
 
 						<div class="offcanvas-header">
 							<div id="offcanvasNavbarLabel" class="offcanvas-title">
-								<h4 class="m-0 p-0">Image Viewer</h4>
-								<h6 class="m-0 p-0" id="nav_label"></h6>
+								<h4 class="fst-italic m-0 p-0">Image Viewer</h4>
+								<h6 class="fst-italic fw-light m-0 p-0" id="nav_label"></h6>
 							</div>
-							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-						</div><!-- offcanvas-header -->
+							<button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+						</div>
 
 						<div class="offcanvas-body">
 							<ul class="navbar-nav me-auto">
 
 								<li class="nav-item">
-									<div class="text-center">Input image info.</div>
-									<div class="input-group mb-1">
+									<div class="fst-italic text-center">Input image info.</div>
+									<div class="input-group mb-0">
 										<label class="input-group-text" for="select_file"><i class="fa-solid fa-file-import"></i></label>
 										<input class="d-none" type="file" id="select_file" name="file" accept="image/*">
-										<label class="form-control" id="select_file_label" for="select_file">Select an image file</label>
+										<label class="form-control label_text text-secondary" id="select_file_label" for="select_file">Select an image file</label>
 									</div>
-									<div class="input-group mb-1">
+									<div class="input-group mb-0">
 										<div class="input-group-text">
 											<input class="form-check-input mt-0" type="radio" name="param_group" checked>
 										</div>
-										<input class="form-control param_number" id="param_sizez" type="text" placeholder="zoom" value="25">
-										<label class="input-group-text">%</label>
+										<input class="form-control param_number" id="param_sizez" type="text" inputmode="decimal" placeholder="zoom" value="25">
+										<label class="input-group-text w-46px">%</label>
 									</div>
-									<div class="input-group mb-3">
+									<div class="input-group mb-0">
 										<div class="input-group-text">
 											<input class="form-check-input mt-0" type="radio" name="param_group">
 										</div>
-										<input class="form-control param_number" id="param_sizex" type="text" placeholder="width">
-										<input class="form-control param_number" id="param_sizey" type="text" placeholder="height">
+										<input class="form-control param_number" id="param_sizex" type="text" inputmode="decimal" placeholder="width">
+										<input class="form-control param_number" id="param_sizey" type="text" inputmode="decimal" placeholder="height">
+										<input class="btn-check d-none" type="checkbox" id="param_link" autocomplete="off">
+										<label class="btn btn-outline-warning" for="param_link"><i class="fa-solid fa-link"></i></label>
+									</div>
+									<div class="input-group mb-4">
+										<div class="input-group-text">
+											<input class="form-check-input mt-0" type="checkbox" id="param_center" value="">
+										</div>
+										<label class="form-control label_text text-secondary" for="param_center">Centering the result image</label>
 									</div>
 								</li>
 
 								<li class="nav-item">
-									<div class="text-center">Result image info.</div>
-									<div class="input-group input-group-sm mb-1">
-										<label class="input-group-text w-50">pixels</label>
-										<label class="form-control label_number" id="result_sizep"></label>
+									<div class="fst-italic text-center">Result image info.</div>
+									<div class="input-group input-group-sm mb-0">
+										<label class="input-group-text fst-italic fw-light w-50">pixels</label>
+										<label class="form-control fst-italic fw-light label_number" id="result_sizep"></label>
 									</div>
-									<div class="input-group input-group-sm mb-3">
-										<label class="input-group-text w-25">width</label>
-										<label class="input-group-text w-25">height</label>
-										<label class="form-control label_number" id="result_sizex"></label>
-										<label class="form-control label_number" id="result_sizey"></label>
-									</div>
-								</li>
-
-								<li class="nav-item">
-									<div class="text-center">Original image info.</div>
-									<div class="input-group input-group-sm mb-1">
-										<label class="input-group-text w-50">pixels</label>
-										<label class="form-control label_number" id="original_sizep"></label>
-									</div>
-									<div class="input-group input-group-sm mb-3">
-										<label class="input-group-text w-25">width</label>
-										<label class="input-group-text w-25">height</label>
-										<label class="form-control label_number" id="original_sizex"></label>
-										<label class="form-control label_number" id="original_sizey"></label>
+									<div class="input-group input-group-sm mb-2">
+										<label class="input-group-text fst-italic fw-light w-25">width</label>
+										<label class="input-group-text fst-italic fw-light w-25">height</label>
+										<label class="form-control fst-italic fw-light label_number" id="result_sizex"></label>
+										<label class="form-control fst-italic fw-light label_number" id="result_sizey"></label>
 									</div>
 								</li>
 
 								<li class="nav-item">
-									<div class="text-center">command</div>
-									<div class="btn-group btn-group-lg mb-3 w-100" role="group" aria-label="">
-										<button type="button" class="btn btn-outline-success" onclick="savePNGImageData()"><i class="fa-light fa-xl fa-file-png"></i></button>
-										<button type="button" class="btn btn-outline-success" onclick="saveJPGImageData()"><i class="fa-light fa-xl fa-file-jpg"></i></button>
+									<div class="fst-italic text-center">Original image info.</div>
+									<div class="input-group input-group-sm mb-0">
+										<label class="input-group-text fst-italic fw-light w-50">pixels</label>
+										<label class="form-control fst-italic fw-light label_number" id="original_sizep"></label>
+									</div>
+									<div class="input-group input-group-sm mb-2">
+										<label class="input-group-text fst-italic fw-light w-25">width</label>
+										<label class="input-group-text fst-italic fw-light w-25">height</label>
+										<label class="form-control fst-italic fw-light label_number" id="original_sizex"></label>
+										<label class="form-control fst-italic fw-light label_number" id="original_sizey"></label>
+									</div>
+								</li>
+
+								<li class="nav-item">
+									<div class="fst-italic text-center">Command</div>
+									<div class="btn-group btn-group-lg mb-3 w-100" role="group">
+										<button type="button" class="btn btn-outline-success" id="btn_png"><i class="fa-light fa-xl fa-file-png"></i></button>
+										<button type="button" class="btn btn-outline-success" id="btn_jpg"><i class="fa-light fa-xl fa-file-jpg"></i></button>
 										<button type="button" class="btn btn-outline-dark d-none" id="btn_tool"><i class="fa-light fa-xl fa-gears"></i></button>
 										<button type="button" class="btn btn-outline-dark" id="btn_help"><i class="fa-solid fa-xl fa-message-question"></i></i></button>
 									</div>
@@ -125,23 +131,23 @@
 						</div><!-- offcanvas-body -->
 					</div><!-- offcanvas -->
 				</div><!-- container-fluid -->
-			</nav>
-		</div><!-- d-flex -->
-	</div><!-- fixed-top -->
+			</nav><!-- navbar -->
+		</div><!-- line 2 -->
 
-	<!-- body -->
+	</div><!-- custom titlebar -->
+
+	<!-- contents body -->
 	<div id="dropzone">
 		<div class="d-none">
-			<canvas id="canvas_src">処理前</canvas>
-			<canvas id="canvas_dst">処理後</canvas>
+			<canvas id="canvas_src"></canvas>
+			<canvas id="canvas_dst"></canvas>
 		</div>
-		<img id="result_image">
+		<div id="loading" class="fs-1">
+			<i class="fa-duotone fa-spinner fa-spin-pulse fa-2xl" style="--fa-primary-color: #ffffff; --fa-secondary-color: #ffffff;"></i>
+		</div>
+		<img id="result_image" class="display-normal">
 	</div>
-
-	<!-- footer -->
-	<div></div>
 </body>
-<!-- bootstrap, electron renderer, 独自イベント定義 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="./js/renderer.js"></script>
 <script src="./js/event.js"></script>

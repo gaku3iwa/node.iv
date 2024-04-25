@@ -20,8 +20,11 @@ contextBridge.exposeInMainWorld(
 	callDevTools: () => ipcRenderer.send(`devtools`),
 
 	//	公開API for contents
+	v8: () => process.versions.v8,
+	zlib: () => process.versions.zlib,
 	node: () => process.versions.node,
 	chrome: () => process.versions.chrome,
+	openssl: () => process.versions.openssl,
 	electron: () => process.versions.electron,
 	app_version: async () => {
 		const result = await ipcRenderer.invoke(`app_version`)
